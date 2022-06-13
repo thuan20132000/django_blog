@@ -3,8 +3,31 @@
 {% block title %}
     {{post.title}}
 {% endblock %}
-
 {% block content %}
-    <h1>{{post.title}}</h1>
+<header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{post.title}}</h1>
+                    <span class="meta">
+                        Posted by
+                        <a href="#!">{{post.author}}</a>
+                        on {{post.created}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+               {{post.body | linebreaks}}
+            </div>
+        </div>
+    </div>
+</article>
 
 {% endblock %}
