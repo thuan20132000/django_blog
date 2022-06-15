@@ -7,7 +7,9 @@
 {% include 'blog/layout/header.html' %}
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
-
+    {% if tag %}
+        <h2> Posts tagged with "{{tag.name}}" </h2>
+    {% endif %}
     {% for post in posts %}
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <!-- Post preview-->
@@ -21,17 +23,22 @@
                             <a href="#!">{{post.author}}</a>
                             on {{post.created}}
                         </p>
+                        <p class="tags">Tags: 
+                            {% for tag in post.tags.all %}
+                                <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                                    {{tag.name}}
+                                </a>
+                                {% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
                     </div>
                     <!-- Divider-->
                     <hr class="my-4" />
                 </div>
-                {% endfor %}
+    {% endfor %}
             </div>
         </div>
-        <!-- Pager-->
-        {% comment %} <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div> {% endcomment %}
-
-       {% include 'blog/layout/pagination.html' with page=posts %}
+    {% include 'blog/layout/pagination.html' with page=posts %}
 
 
 {% endblock content %}
