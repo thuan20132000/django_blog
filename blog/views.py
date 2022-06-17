@@ -2,19 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
-from .forms import CommentForm, EmailPostForm
+from .forms import CommentForm, EmailPostForm, SearchForm
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
-
+from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 # Create your views here.
-
-
-class PostListView(ListView):
-    queryset = Post.published.all()
-    context_object_name = 'posts'
-    paginate_by = 6
-    template_name = 'blog/post/list.html'
 
 
 def post_list(request, tag_slug=None):
@@ -44,7 +37,6 @@ def post_detail(request, post):
     post = get_object_or_404(Post, slug=post, status='published',)
 
     comments = post.comments.filter(active=True)
-    print('comments:: ', post.comments.filter(active=True))
     new_comment = None
 
     if request.method == 'POST':
@@ -98,3 +90,25 @@ def post_share(request, post_id):
         'form': form,
         'sent': sent
     })
+
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+
+            search_vector = SearchVector('title', 'body')
+            search_query = SearchQuery(query)
+            results = Post.published.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector, search_query)
+            ).filter(search=search_query).order_by('-rank')
+
+    return render(request,  'blog/post/search.html',
+                  {'form': form,
+                   'query': query,
+                   'results': results})
