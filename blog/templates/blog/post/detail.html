@@ -1,31 +1,53 @@
 {% extends "blog/base.html" %}
+{% load blog_tags %}
 
 {% block title %}
     {{post.title}}
 {% endblock %}
 {% block content %}
-<header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
-    <div class="container position-relative px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="post-heading">
-                    <h1>{{post.title}}</h1>
-                    <span class="meta">
-                        Posted by
-                        <a href="#!">{{post.author}}</a>
-                        on {{post.created}}
-                    </span>
+
+
+<div class="col-lg-8">
+    <div class="all-blog-posts">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="blog-post">
+            <div class="blog-thumb">
+              <img src="assets/images/blog-post-02.jpg" alt="">
+            </div>
+            <div class="down-content">
+              <a href="{{ post.get_absolute_url }}"><h4>{{post.title}}</h4></a>
+              <ul class="post-info">
+                <li><a href="#">{{post.author}}</a></li>
+                <li><a href="#">{{post.created}}</a></li>
+                <li><a href="#">{{post.comments.count}} Comment{{comments.count|pluralize}}</a></li> 
+                
+              </ul>
+             {{post.body|markdown}}
+              <div class="post-options">
+                <div class="row">
+                  <div class="col-6">
+                    <ul class="post-tags">
+                        <li><i class="fa fa-tags"></i></li>
+                        {% for tag in post.tags.all %}
+                          <li>
+                            <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                            {{tag.name}}
+                            </a>
+                          {% if not forloop.last %}, {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</header>
-<article class="mb-4">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-               {{post.body | linebreaks}}
-            </div>
+
+
+        <div class="col-lg-12">
+            {% get_similar_posts post as similar_posts  %}
             <h2>Similar posts</h2>
             {% for post in similar_posts %}
             <p>
@@ -34,40 +56,60 @@
             {% empty %}
                 There are no similar posts yet.
             {% endfor %}
+        </div>
 
-            {% comment %} <p>
-                <a href="{% url 'blog:post_share' post.id %}">Share this post</a>
-            </p> {% endcomment %}
-            {% with comments.count as total_comments %}
-            <h2>
-                {{total_comments}} comment{{total_comments|pluralize}}
-            </h2>
-            {% endwith %}
+        <div class="col-lg-12">
+          <div class="sidebar-item comments">
+            <div class="sidebar-heading">
+                {% with comments.count as total_comments %}
+                <h2>
+                    {{total_comments}} comment{{total_comments|pluralize}}
+                </h2>
+                {% endwith %}
+            </div>
+            <div class="content">
+              <ul>
+                {% for comment in comments %}
 
-            {% for comment in comments %}
-                <div class="comment">
-                    <p class="info">
-                        Comment {{forloop.counter}} by {{comment.name}} {{comment.created}}
-                    </p>
-                    {{comment.body|linebreaks}}
-                </div>
+                <li>
+                    <div class="content-left">
+                      <h6> Comment by {{comment.name}}<span>{{comment.created}}</span></h6>
+                      <p>  {{comment.body|linebreaks}}</p>
+                    </div>
+                </li>
+                <br>
             {% empty %}
             <p>There are no comments yet.</p>
             {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
 
-            {% if new_comment %}
+
+        <div class="col-lg-12">
+          <div class="sidebar-item submit-comment">
+           
+            <div class="content">
+                {% if new_comment %}
                 <h2>Your comment has been added</h2>
-            {% else %}
+                {% else %}
                 <h2>Add a new Comment</h2>
                 <form method="post">
                     {{comment_form.as_p}}
                     {% csrf_token %}
-                    <p><input type="submit" value="Add comment"/></p>
+                    <p><input type="submit" value="Add comment" class="btn btn-light" /></p>
                 </form>
-            {% endif %}
+                {% endif %}
 
+            </div>
+          </div>
         </div>
-    </div>
-</article>
 
+
+      </div>
+    </div>
+  </div>
+
+  
 {% endblock %}

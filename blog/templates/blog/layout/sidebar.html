@@ -1,0 +1,41 @@
+
+{% load blog_tags %}
+
+<div class="col-lg-4">
+    <div class="sidebar">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="sidebar-item search">
+            <form id="search_form" name="gs" method="GET" action="#">
+              <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="sidebar-item recent-posts">
+            <div class="sidebar-heading">
+              <h2>Recent Posts</h2>
+            </div>
+            {% show_latest_posts 3 %}
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="sidebar-item tags">
+            <div class="sidebar-heading">
+              <h2>Most commented posts</h2>
+            </div>
+            <div class="content">
+                {% get_most_commented_posts as most_commented_posts %}
+                <ul>
+                    {% for post in most_commented_posts %}
+                      <li>
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                      </li>
+                    {% endfor %}
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

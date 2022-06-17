@@ -67,7 +67,7 @@ def post_detail(request, post):
         'comments': comments,
         'new_comment': new_comment,
         'comment_form': comment_form,
-        'similar_posts': similar_posts
+        # 'similar_posts': similar_posts
     })
 
 

@@ -1,0 +1,12 @@
+
+<div class="content">
+  <ul>
+    {% for post in latest_posts %}
+
+    <li><a href="{{ post.get_absolute_url }}">
+      <p>{{ post.title }}</p>
+      <span>{{post.created}}</span>
+    </a></li>
+  {% endfor %}
+  </ul>
+</div>
