@@ -60,3 +60,20 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return f'Comment by {self.name} on {self.post}'
+
+
+class Menu(models.Model):
+    STATUS_CHOICE = (
+        ('draft', 'Draft'),
+        ('published', 'Published')
+    )
+
+    title = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, )
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICE, default='draft')
+
+    published = PublishedManager()
+
+    def __str__(self) -> str:
+        return f'Menu: {self.title}'

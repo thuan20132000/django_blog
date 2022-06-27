@@ -1,5 +1,5 @@
 from django import template
-from blog.models import Post
+from blog.models import Menu, Post
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 import markdown
@@ -36,6 +36,16 @@ def show_latest_posts(count=5):
     return {'latest_posts': latest_posts}
 
 
+@register.simple_tag
+def get_latest_posts(count=4):
+    return Post.published.order_by('-publish')[:count]
+
+
 @register.filter(name='markdown')
 def markdown_format(text):
     return mark_safe(markdown.markdown(text))
+
+
+@register.simple_tag
+def get_menus():
+    return Menu.published.all()
