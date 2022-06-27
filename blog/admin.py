@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from blog.models import Comment, Post
+from blog.models import Comment, Menu, Post
 
 # Register your models here.
 
@@ -21,3 +21,10 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'post', 'created', 'active')
     list_filter = ('active', 'created', 'updated')
     search_fields = ('name', 'email', 'body')
+
+
+@admin.register(Menu)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug', 'status')
+    prepopulated_fields = {'slug': ('title',)}
+    list_editable = ('status',)
