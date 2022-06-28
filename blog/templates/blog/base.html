@@ -55,7 +55,7 @@ https://templatemo.com/tm-551-stand-blog
       {% get_latest_posts 3  as latest_posts %}
         {% for post in latest_posts %}
         <div class="item">
-          <img src="https://i.pinimg.com/564x/d4/de/49/d4de490af80c2b502d9fed779b02f9af.jpg" alt="">
+          <img src="{{post.get_post_image_url}}" alt="">
           <div class="item-content">
             <div class="main-content">
               {% comment %} <div class="meta-category">
