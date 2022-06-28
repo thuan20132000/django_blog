@@ -45,6 +45,11 @@ class Post(models.Model):
                            self.slug
                        ])
 
+    @property
+    def get_post_image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+
 
 class Comment(models.Model):
     post = models.ForeignKey(
