@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.postgres',
     'blog',
-    'taggit'
+    'taggit',
+    'tinymce'
 ]
 
 MIDDLEWARE = [
