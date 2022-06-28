@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 # Create your models here.
+from tinymce.models import HTMLField
 
 
 class PublishedManager(models.Manager):
@@ -21,7 +22,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=250, unique_for_date='publish')
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='blog_posts')
-    body = models.TextField()
+    body = HTMLField()
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(blank=True, upload_to='image/')
