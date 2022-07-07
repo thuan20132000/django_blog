@@ -22,7 +22,7 @@
                             <li><a href="#">{{post.created}}</a></li>
                             <li><a href="#">{{post.comments.count}} comment{{post.comments.count|pluralize}}</a></li>
                           </ul>
-                          <p>{{ post.body|truncatewords:50 }}</p>
+                          <p>{{ post.body|truncatewords:50|safe }}</p>
                           <div class="post-options">
                             <div class="row">
                               <div class="col-6">
