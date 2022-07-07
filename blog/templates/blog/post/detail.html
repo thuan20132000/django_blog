@@ -23,7 +23,7 @@
                 <li><a href="#">{{post.comments.count}} Comment{{comments.count|pluralize}}</a></li> 
                 
               </ul>
-             {{post.body|markdown}}
+             {{post.body|markdown|safe}}
               <div class="post-options">
                 <div class="row">
                   <div class="col-6">
