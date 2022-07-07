@@ -1,12 +1,15 @@
 from django.contrib import admin
 
 from blog.models import Comment, Menu, Post
+from django_summernote.admin import SummernoteModelAdmin
 
 # Register your models here.
 
+# Apply summernote to all TextField in model.
+
 
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+class SomeModelAdmin(SummernoteModelAdmin):  # instead of ModelAdmin
     list_display = ('title', 'slug', 'author', 'publish', 'status')
     list_filter = ('status', 'created', 'publish', 'author')
     search_fields = ('title', 'body')
@@ -14,6 +17,7 @@ class PostAdmin(admin.ModelAdmin):
     raw_id_fields = ('author',)
     date_hierarchy = 'publish'
     ordering = ('status', 'publish')
+    summernote_fields = '__all__'
 
 
 @admin.register(Comment)
