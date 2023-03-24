@@ -52,10 +52,12 @@ def markdown_format(text):
 def get_menus():
     return Menu.published.all()
 
-@register.simple_tag
-def get_all_tags(count=5):
 
-    tags = Tag.objects.all()
+@register.simple_tag
+def get_all_tags():
+
+    tags = Tag.objects.annotate(post_num=Count('post')).order_by('-post_num').all()
+    
     # return tags(
     #     total_comments=Count('comments')
     # ).order_by('-total_comments')[:count]
