@@ -3,6 +3,8 @@ from blog.models import Menu, Post
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 import markdown
+from taggit.models import Tag
+
 register = template.Library()
 
 
@@ -49,3 +51,12 @@ def markdown_format(text):
 @register.simple_tag
 def get_menus():
     return Menu.published.all()
+
+@register.simple_tag
+def get_all_tags(count=5):
+
+    tags = Tag.objects.all()
+    # return tags(
+    #     total_comments=Count('comments')
+    # ).order_by('-total_comments')[:count]
+    return tags
