@@ -11,6 +11,8 @@ from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 
 
 def post_list(request, tag_slug=None, category_slug=None):
+    tag = None
+
     if category_slug:
         posts = Post.published.filter(category__slug=category_slug)
     elif tag_slug:
