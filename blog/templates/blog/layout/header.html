@@ -9,10 +9,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-          {% get_menus as menus %}
-            {% for menu in menus  %}
+          {% get_categories as categories %}
+            {% for category in categories  %}
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'blog:post_list' %}">{{menu.title}}
+              <a class="nav-link" href="{% url 'blog:post_list_by_category' category.slug  %}">{{category.title}}
                 <span class="sr-only">(current)</span>
               </a>
             </li> 

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from blog.models import Comment, Menu, Post
+from blog.models import Comment, Menu, Post, Category
 from django_summernote.admin import SummernoteModelAdmin
 
 # Register your models here.
@@ -29,6 +29,13 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(Menu)
 class CommentAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug', 'status')
+    prepopulated_fields = {'slug': ('title',)}
+    list_editable = ('status',)
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'status')
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ('status',)

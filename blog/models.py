@@ -12,6 +12,25 @@ class PublishedManager(models.Manager):
         return super(PublishedManager, self).get_queryset().filter(status='published')
 
 
+class Category(models.Model):
+    STATUS_CHOICE = (
+        ('draft', 'Draft'),
+        ('published', 'Published')
+    )
+    title = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, unique_for_date='created')
+    image = models.ImageField(blank=True, upload_to='image/', null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICE, default='draft')
+
+    published = PublishedManager()
+
+    def __str__(self) -> str:
+        return self.title
+
+
 class Post(models.Model):
     STATUS_CHOICE = (
         ('draft', 'Draft'),
@@ -32,6 +51,8 @@ class Post(models.Model):
     objects = models.Manager()
     published = PublishedManager()
     tags = TaggableManager()
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, related_name='posts', null=True)
 
     class Meta:
         ordering = ('-publish',)

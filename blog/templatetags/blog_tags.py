@@ -1,5 +1,5 @@
 from django import template
-from blog.models import Menu, Post
+from blog.models import Menu, Post, Category
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 import markdown
@@ -54,10 +54,16 @@ def get_menus():
 
 
 @register.simple_tag
+def get_categories():
+    return Category.published.all()
+
+
+@register.simple_tag
 def get_all_tags():
 
-    tags = Tag.objects.annotate(post_num=Count('post')).order_by('-post_num').all()
-    
+    tags = Tag.objects.annotate(post_num=Count(
+        'post')).order_by('-post_num').all()
+
     # return tags(
     #     total_comments=Count('comments')
     # ).order_by('-total_comments')[:count]

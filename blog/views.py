@@ -10,12 +10,15 @@ from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 # Create your views here.
 
 
-def post_list(request, tag_slug=None):
-    posts = Post.published.all()
-    tag = None
-    if tag_slug:
+def post_list(request, tag_slug=None, category_slug=None):
+    if category_slug:
+        posts = Post.published.filter(category__slug=category_slug)
+    elif tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
-        posts = posts.filter(tags__in=[tag])
+        posts = Post.published.filter(tags__in=[tag])
+    else:
+        posts = Post.published.all()
+
     paginator = Paginator(posts, 6)
     page = request.GET.get('page')
 
